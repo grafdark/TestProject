@@ -3,5 +3,5 @@
   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
   <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
   <script src="<c:url value="/js/jquery-1.7.2.min.js" />"></script>
-  <title><spring:message code="message.name_site" text="Tasks and Contactors" /></title>
+  <title><spring:message code="message.name.site" text="Tasks and Executors"/></title>
 </head>

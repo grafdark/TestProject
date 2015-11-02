@@ -1,18 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <%@include file="includes/header.jsp" %>
-    <script type="text/javascript">
-        function deleteTask() {
-            if (confirm("Are you sure you want to delete task?"){
-                return true;
-            }
-            else {
-                return false;
-            }
+<%@include file="includes/header.jsp" %>
+<script type="text/javascript">
+    function deleteTask() {
+        if (confirm("Are you sure you want to delete task?")) {
+            return true;
         }
-    </script>
-</head>
+        else {
+            return false;
+        }
+    }
+</script>
 <body>
 <div class="container">
     <jsp:include page="includes/headerPage.jsp"/>
@@ -23,9 +21,8 @@
         </header>
     </div>
     <jsp:include page="includes/panelSortingTasks.jsp"/>
-    <section class="grid col-three-quarters mq2-col-full">
+    <div class="grid col-three-quarters mq2-col-full">
         <div class="grid-wrap works">
-            <p>${message}</p>
             <c:forEach var="tasks" items="${tasks}">
                 <figure class="grid col-one-third mq1-col-one-half mq2-col-one-third mq3-col-full work_1">
                     <figcaption>
@@ -61,7 +58,8 @@
                 </figure>
             </c:forEach>
         </div>
-    </section>
+        </section>
+    </div>
 </div>
 </body>
 </html>

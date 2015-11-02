@@ -9,13 +9,21 @@ import java.util.List;
  * Created by graf on 23.10.2015.
  */
 public interface ExecutorService {
-    List<Executor> takeExecutorList();
-    List<Executor> takeListByType(ExecutorTypes executorTypes);
-    List<Executor> takeListByName();
-    List<Executor> takeLastFiveExecutors();
-    Executor createExecutor(Executor executor);
-    Executor editExecutor(String name, Executor executor);
+    List<Executor> findExecutorsList();
+
+    List<Executor> findExecutorsByType(ExecutorTypes executorTypes);
+
+    List<Executor> findExecutorsByName();
+
+    List<Executor> findLastFiveExecutors();
+
+    boolean createExecutor(Executor executor);
+
+    boolean editExecutor(String name, Executor executor);
+
     boolean deleteExecutor(String name);
+
     Executor getExecutor(String name);
+
     Executor saveExecutor(Executor executor);
 }

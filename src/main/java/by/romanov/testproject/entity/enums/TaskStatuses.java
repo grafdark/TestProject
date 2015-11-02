@@ -7,10 +7,7 @@ import java.util.List;
  * Created by graf on 24.10.2015.
  */
 public enum TaskStatuses {
-    NOT_STARTED,
-    UNDERWAY,
-    LOCK,
-    COMPLETED;
+    NOT_STARTED, UNDERWAY, LOCK, COMPLETED;
 
     public static List<String> getStatuses() {
         List<String> statuses = new ArrayList<String>();

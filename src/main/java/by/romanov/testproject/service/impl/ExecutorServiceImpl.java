@@ -17,32 +17,32 @@ public class ExecutorServiceImpl implements ExecutorService {
     private ExecutorDao executorDao;
 
     @Override
-    public List<Executor> takeExecutorList() {
-        return executorDao.takeExecutorList();
+    public List<Executor> findExecutorsList() {
+        return executorDao.findExecutorsList();
     }
 
     @Override
-    public List<Executor> takeListByType(ExecutorTypes executorTypes) {
-        return executorDao.takeListByType(executorTypes);
+    public List<Executor> findExecutorsByType(ExecutorTypes executorTypes) {
+        return executorDao.findExecutorsByType(executorTypes);
     }
 
     @Override
-    public List<Executor> takeListByName() {
-        return executorDao.takeListByName();
+    public List<Executor> findExecutorsByName() {
+        return executorDao.findExecutorsByName();
     }
 
     @Override
-    public List<Executor> takeLastFiveExecutors() {
-        return executorDao.takeLastFiveExecutors();
+    public List<Executor> findLastFiveExecutors() {
+        return executorDao.findLastFiveExecutors();
     }
 
     @Override
-    public Executor createExecutor(Executor executor) {
+    public boolean createExecutor(Executor executor) {
         return executorDao.createExecutor(executor);
     }
 
     @Override
-    public Executor editExecutor(String name, Executor executor) {
+    public boolean editExecutor(String name, Executor executor) {
         return executorDao.editExecutor(name, executor);
     }
 

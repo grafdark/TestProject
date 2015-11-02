@@ -20,7 +20,7 @@ public class Executor {
     @Column(name = "executor_id")
     @GeneratedValue(generator = "increment")
     private Integer id;
-    @Column(name = "name", unique = true)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -28,12 +28,10 @@ public class Executor {
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private ExecutorTypes type;
-
     @LazyCollection(value = LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "executors_task", joinColumns = {@JoinColumn(name = "executor_id", referencedColumnName = "executor_id")}, inverseJoinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "task_id")})
     private List<Task> tasks;
-
 
     public Executor() {
     }

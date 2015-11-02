@@ -2,6 +2,7 @@ package by.romanov.testproject.dao.impl;
 
 import by.romanov.testproject.dao.TaskDao;
 import by.romanov.testproject.entity.Task;
+import by.romanov.testproject.entity.enums.TaskStatuses;
 import by.romanov.testproject.entity.enums.TaskTypes;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -20,7 +21,7 @@ public class TaskDaoImpl implements TaskDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<Task> takeTaskList() {
+    public List<Task> findTasks() {
         Session session = sessionFactory.openSession();
         List<Task> tasks = session.createQuery("from Task").list();
         session.close();
@@ -28,7 +29,7 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public List<Task> takeListByTypeTask(TaskTypes taskTypes) {
+    public List<Task> findTasksByTypeTask(TaskTypes taskTypes) {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("from Task where type=:type");
         query.setParameter("type", taskTypes);
@@ -39,7 +40,7 @@ public class TaskDaoImpl implements TaskDao {
 
 
     @Override
-    public List<Task> takeListByAlphabet() {
+    public List<Task> findTasksByAlphabet() {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("from Task order by name");
         List<Task> tasks = query.list();
@@ -48,7 +49,7 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public List<Task> takeListByPriority() {
+    public List<Task> findTasksByPriority() {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("from Task order by priority desc ");
         List<Task> tasks = query.list();
@@ -57,7 +58,7 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public List<Task> takeListByDate() {
+    public List<Task> findTasksByDate() {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("from Task order by date desc ");
         List<Task> tasks = query.list();
@@ -66,12 +67,21 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public List<Task> takeFiveLastTask() {
+    public List<Task> findFiveLastTasks() {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("from Task   order by id desc");
+        Query query = session.createQuery("from Task order by id desc");
         query.setMaxResults(5);
         List<Task> tasks = query.list();
         session.close();
+        return tasks;
+    }
+
+    @Override
+    public List<Task> findTasksNotStarted() {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("from Task where status=:status");
+        query.setParameter("status", TaskStatuses.NOT_STARTED);
+        List<Task> tasks = query.list();
         return tasks;
     }
 
@@ -80,6 +90,18 @@ public class TaskDaoImpl implements TaskDao {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         session.update(initTaskForUpdate(task));
+        tx.commit();
+        session.close();
+        return task;
+    }
+
+    @Override
+    public Task editStatusesTask(TaskStatuses status, Integer id) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        Task task = getTask(id);
+        task.setStatus(status);
+        session.saveOrUpdate(task);
         tx.commit();
         session.close();
         return task;

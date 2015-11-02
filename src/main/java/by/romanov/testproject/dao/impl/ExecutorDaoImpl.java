@@ -2,14 +2,15 @@ package by.romanov.testproject.dao.impl;
 
 import by.romanov.testproject.dao.ExecutorDao;
 import by.romanov.testproject.entity.Executor;
-
 import by.romanov.testproject.entity.enums.ExecutorTypes;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import com.mysql.jdbc.SQLError;
+import org.hibernate.*;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 
+import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class ExecutorDaoImpl implements ExecutorDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<Executor> takeExecutorList() {
+    public List<Executor> findExecutorsList() {
         Session session = sessionFactory.openSession();
         String sqlQuery = "from Executor";
         List<Executor> listExecutor = session.createQuery(sqlQuery).list();
@@ -30,7 +31,7 @@ public class ExecutorDaoImpl implements ExecutorDao {
     }
 
     @Override
-    public List<Executor> takeListByType(ExecutorTypes executorTypes) {
+    public List<Executor> findExecutorsByType(ExecutorTypes executorTypes) {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("from Executor where type=:type");
         query.setParameter("type", executorTypes);
@@ -40,7 +41,7 @@ public class ExecutorDaoImpl implements ExecutorDao {
     }
 
     @Override
-    public List<Executor> takeListByName() {
+    public List<Executor> findExecutorsByName() {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("from Executor order by name");
         List<Executor> executors = query.list();
@@ -49,7 +50,7 @@ public class ExecutorDaoImpl implements ExecutorDao {
     }
 
     @Override
-    public List<Executor> takeLastFiveExecutors() {
+    public List<Executor> findLastFiveExecutors() {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("from Executor order by id desc ");
         query.setMaxResults(5);
@@ -59,28 +60,32 @@ public class ExecutorDaoImpl implements ExecutorDao {
     }
 
     @Override
-    public Executor createExecutor(Executor executor) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+    public boolean createExecutor(Executor executor) {
+        Session session = null;
+        Transaction tx = null;
+        session = sessionFactory.openSession();
+        tx = session.beginTransaction();
         session.save(executor);
         tx.commit();
         session.close();
-        return executor;
+        return true;
     }
 
     @Override
-    public Executor editExecutor(String name, Executor executor) {
+    public boolean editExecutor(String name, Executor executor) {
         Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        Executor executorForUpdate = initExecutorForUpdate(name, executor);
-        session.update(executorForUpdate);
+        Transaction tx = null;
+        tx = session.beginTransaction();
+        Executor executorForUpdate = initExecutorForUpdate(name, executor, session);
+        session.saveOrUpdate(executorForUpdate);
         tx.commit();
-        session.close();
-        return executorForUpdate;
+        return true;
     }
 
-    private Executor initExecutorForUpdate(String name, Executor executor) {
-        Executor executorForUpdate = getExecutor(name);
+    private Executor initExecutorForUpdate(String name, Executor executor, Session session) {
+        Query sqlQuery = session.createQuery("from Executor where name=:name");
+        sqlQuery.setParameter("name", name);
+        Executor executorForUpdate = (Executor) sqlQuery.uniqueResult();
         executorForUpdate.setStatus(executor.getStatus());
         executorForUpdate.setType(executor.getType());
         executorForUpdate.setName(executor.getName());

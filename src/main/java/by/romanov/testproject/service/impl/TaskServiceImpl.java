@@ -2,6 +2,7 @@ package by.romanov.testproject.service.impl;
 
 import by.romanov.testproject.dao.TaskDao;
 import by.romanov.testproject.entity.Task;
+import by.romanov.testproject.entity.enums.TaskStatuses;
 import by.romanov.testproject.entity.enums.TaskTypes;
 import by.romanov.testproject.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,38 +18,48 @@ public class TaskServiceImpl implements TaskService {
     private TaskDao taskDao;
 
     @Override
-    public List<Task> takeTaskList() {
-        return taskDao.takeTaskList();
+    public List<Task> findTasks() {
+        return taskDao.findTasks();
     }
 
     @Override
-    public List<Task> takeListByTypeTask(TaskTypes taskTypes) {
-        return taskDao.takeListByTypeTask(taskTypes);
+    public List<Task> findTasksByTypeTask(TaskTypes taskTypes) {
+        return taskDao.findTasksByTypeTask(taskTypes);
     }
 
     @Override
-    public List<Task> takeListByAlphabet() {
-        return taskDao.takeListByAlphabet();
+    public List<Task> findTasksByAlphabet() {
+        return taskDao.findTasksByAlphabet();
     }
 
     @Override
-    public List<Task> takeListByPriority() {
-        return taskDao.takeListByPriority();
+    public List<Task> findTasksByPriority() {
+        return taskDao.findTasksByPriority();
     }
 
     @Override
-    public List<Task> takeListByDate() {
-        return taskDao.takeListByDate();
+    public List<Task> findTasksByDate() {
+        return taskDao.findTasksByDate();
     }
 
     @Override
-    public List<Task> takeFiveLastTask() {
-        return taskDao.takeFiveLastTask();
+    public List<Task> findFiveLastTasks() {
+        return taskDao.findFiveLastTasks();
+    }
+
+    @Override
+    public List<Task> findTasksNotStarted() {
+        return taskDao.findTasksNotStarted();
     }
 
     @Override
     public Task editTask(Task task) {
         return taskDao.editTask(task);
+    }
+
+    @Override
+    public Task editStatusesTask(TaskStatuses status, Integer id) {
+        return taskDao.editStatusesTask(status, id);
     }
 
     @Override

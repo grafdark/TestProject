@@ -21,7 +21,7 @@ public class Task {
     @Column(name = "task_id", unique = true)
     @GeneratedValue(generator = "increment")
     private Integer id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "date")
     private Timestamp date;
@@ -35,8 +35,7 @@ public class Task {
     private Integer priority;
     @Column(name = "executor")
     private String executor;
-
-    @LazyCollection(value = LazyCollectionOption.FALSE )
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     @ManyToMany
     @JoinTable(name = "executors_task", joinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "task_id")}, inverseJoinColumns = {@JoinColumn(name = "executor_id", referencedColumnName = "executor_id")})
     private List<Executor> executors;
