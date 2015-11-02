@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+       <bean id="executorDao" class="by.romanov.testproject.dao.impl.ExecutorDaoImpl"/>
+       <bean id="executorService" class="by.romanov.testproject.service.impl.ExecutorServiceImpl"/>
+       <bean id="taskDao" class="by.romanov.testproject.dao.impl.TaskDaoImpl"/>
+       <bean id="taskService" class="by.romanov.testproject.service.impl.TaskServiceImpl"/>
+
+</beans>
